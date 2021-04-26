@@ -3,7 +3,11 @@ package com.yoyo.mvvm.vm
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.yoyo.mvvm.data.api.PostClient
+import com.yoyo.mvvm.repository.MovieDetails
 import com.yoyo.mvvm.repository.Result
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class popularViewModel : ViewModel() {
 
@@ -11,16 +15,36 @@ class popularViewModel : ViewModel() {
 
     fun fetchMovies(){
 
-        val retrofitList = PostClient.getClient()
+        val retrofit = PostClient.getClient()
+
+        val call = retrofit.getPost(PostClient.AppId)
 
 
 
 
-        println(retrofitList)
-        if(retrofitList?.isEmpty() == false){
-            println(retrofitList[0])
-            moviesData.value = retrofitList!!
-        }
+        call.enqueue(object : Callback<MovieDetails> {
+
+            override fun onResponse(call: Call<MovieDetails>, response: Response<MovieDetails>) {
+                println(response.body()?.results)
+
+               moviesData.value = response.body()?.results
+
+
+
+
+            }
+
+            override fun onFailure(call: Call<MovieDetails>, t: Throwable) {
+                println(t.message)
+
+            }
+
+        })
+
+
+
+
+
 
 
 
@@ -28,4 +52,6 @@ class popularViewModel : ViewModel() {
 
     }
 }
+
+
 

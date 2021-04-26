@@ -1,4 +1,5 @@
 package com.yoyo.mvvm.data.api
+import androidx.lifecycle.ViewModel
 import com.yoyo.mvvm.repository.MovieDetails
 import com.yoyo.mvvm.repository.Result
 import retrofit2.Call
@@ -18,7 +19,7 @@ object  PostClient {
     var moviesList : List<Result> = emptyList()
 
 
-    fun getClient(): List<Result>?{
+    fun getClient(): popularMovieDBInterface {
 
        val retrofit = Retrofit.Builder()
            .baseUrl(BaseUrl)
@@ -29,31 +30,10 @@ object  PostClient {
        val service = retrofit.create(popularMovieDBInterface::class.java)
 
 
-        val call = service.getPost(AppId)
 
 
 
-
-        call.enqueue(object : Callback<MovieDetails> {
-
-            override fun onResponse(call: Call<MovieDetails>, response: Response<MovieDetails>) {
-                println(response.body()?.results)
-                moviesList = response.body()?.results!!
-
-                println(moviesList)
-
-
-            }
-
-            override fun onFailure(call: Call<MovieDetails>, t: Throwable) {
-                println(t.message)
-
-            }
-
-        })
-
-
-        return moviesList
+        return service
 
    }
 
