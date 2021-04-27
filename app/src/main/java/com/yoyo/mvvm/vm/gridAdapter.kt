@@ -51,8 +51,8 @@ class gridAdapter: BaseAdapter() {
 
                     println("clicked $position")
                     val intent= Intent(parent?.context, SingleMovie::class.java)
-//                    val intent = Intent(context, SingleMovie::class.java)
-//                    intent.putExtra("id", movie?.id)
+
+                    intent.putExtra("id", results[position].id)
                     parent?.context?.startActivity(intent)
 
                 }

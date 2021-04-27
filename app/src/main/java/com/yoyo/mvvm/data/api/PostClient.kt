@@ -19,23 +19,25 @@ object  PostClient {
     var moviesList : List<Result> = emptyList()
 
 
+    fun buildRetrofit() : Retrofit{
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BaseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return retrofit
+    }
+
     fun getClient(): popularMovieDBInterface {
+        val retrofit = buildRetrofit()
 
-       val retrofit = Retrofit.Builder()
-           .baseUrl(BaseUrl)
-           .addConverterFactory(GsonConverterFactory.create())
-           .build()
-
-
-       val service = retrofit.create(popularMovieDBInterface::class.java)
-
-
-
-
+        val service = retrofit.create(popularMovieDBInterface::class.java)
 
         return service
 
    }
+
+
 
 
 
